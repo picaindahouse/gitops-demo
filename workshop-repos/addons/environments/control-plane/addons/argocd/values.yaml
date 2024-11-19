@@ -3,4 +3,4 @@ configs:
   cm:
     ui.bannercontent: "Management Environment ArgoCD"
   params:
-    server.basehref: /proxy/8081/
+    server.insecure: true
