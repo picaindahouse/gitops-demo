@@ -9,6 +9,7 @@
 {{- $repoURLValues := .Values.repoURLValues -}}
 {{- $repoURLValuesRevision := .Values.repoURLValuesRevision -}}
 {{- $repoURLValuesBasePath := .Values.repoURLValuesBasePath -}}
+{{- $repoURLValuesBasePathHelm := .Values.repoURLValuesBasePathHelm -}}
 {{- $project := .Values.project -}}
 {{- $syncPolicy := .Values.syncPolicy -}}
 {{- $stackPath := .Values.stackPath -}}
@@ -161,13 +162,13 @@ spec:
           {{ with $valueFiles -}}
           valueFiles:
           {{- range . }}
-            - '$values/{{ $repoURLValuesBasePath }}{{ if $useValuesFilePrefix }}{{ $valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}/values.yaml'
+            - '$values/{{ $repoURLValuesBasePathHelm }}{{ if $useValuesFilePrefix }}{{ $valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}/values.yaml'
             {{- if $useStack }}
-            - '$values/{{ $repoURLValuesBasePath }}{{ if $useValuesFilePrefix }}{{ $valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}/{{`{{- $version := .addons.`}}{{ $name }}{{`.targetRevision -}}
+            - '$values/{{ $repoURLValuesBasePathHelm }}{{ if $useValuesFilePrefix }}{{ $valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}/{{`{{- $version := .addons.`}}{{ $name }}{{`.targetRevision -}}
 {{- $versionWithoutV := regexReplaceAll "^v" $version "" -}}
 {{- $majorMinor := regexReplaceAll "\\.\\d+$" $versionWithoutV "" -}}{{- $majorMinor -}}`}}/values.yaml'
             {{- else }}
-            - '$values/{{ $repoURLValuesBasePath }}{{ if $useValuesFilePrefix }}{{ $valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}/{{ $majorMinor }}/values.yaml'
+            - '$values/{{ $repoURLValuesBasePathHelm }}{{ if $useValuesFilePrefix }}{{ $valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}/{{ $majorMinor }}/values.yaml'
             {{- end }}
           {{- end }}
           {{- end }}
