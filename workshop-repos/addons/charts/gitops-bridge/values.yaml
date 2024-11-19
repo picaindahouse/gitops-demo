@@ -21,10 +21,10 @@ stackPathConfigPrefix: 'k8s-v'
 stackPathConfig: 'addons-config.yaml'
 repoURLGit: "'{{.metadata.annotations.addons_repo_url}}'"
 repoURLGitRevision: HEAD
-repoURLGitBasePath: "stacks/"
+repoURLGitBasePath: "'{{.metadata.annotations.addons_repo_basepath}}'"
 repoURLValues: "'{{.metadata.annotations.addons_repo_url}}'"
 repoURLValuesRevision: HEAD
-repoURLValuesBasePathHelm: ""
+repoURLValuesBasePathHelm: "'{{.metadata.annotations.addons_repo_basepath}}'"
 repoURLValuesBasePath: "'{{.metadata.annotations.addons_repo_basepath}}'"
 project: default
 namespace: argocd
