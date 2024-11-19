@@ -22,7 +22,7 @@ stackPathConfig: 'addons-config.yaml'
 repoURLGit: "'{{.metadata.annotations.addons_repo_url}}'"
 repoURLGitRevision: HEAD
 repoURLGitBasePath: "stacks/"
-repoURLValues: "'{{.metadata.annotations.addons_repo_url}}{{.metadata.annotations.addons_repo_basepath}}'"
+repoURLValues: "'{{.metadata.annotations.addons_repo_url}}tree/HEAD/{{.metadata.annotations.addons_repo_basepath}}'"
 repoURLValuesRevision: HEAD
 repoURLValuesBasePath: ""
 repoURLValuesBasePathHelm: ""
