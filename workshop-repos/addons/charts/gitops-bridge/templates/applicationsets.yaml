@@ -123,7 +123,7 @@ spec:
     metadata:
       name: addon-{{ $nameNormalize }}{{ if $useSelector }}-{{`{{.nameNormalized}}`}}{{ end }}
       annotations:
-        argocd.argoproj.io/manifest-generate-paths: {{ with $valueFiles }}{{ range . }}{{ $repoURLValuesBasePath }}{{ if $useValuesFilePrefix }}{{ $valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}/values.yaml;{{ end }}{{ end }}
+        argocd.argoproj.io/manifest-generate-paths: {{ with $valueFiles }}{{ range . }}{{ $repoURLValuesBasePathHelm }}{{ if $useValuesFilePrefix }}{{ $valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}/values.yaml;{{ end }}{{ end }}
         {{- include "gitops-bridge.annotations" $ | nindent 8 }}
         {{- if $addon.annotationsApp }}{{- toYaml $addon.annotationsApp | nindent 8 }}{{- end }}
       labels:
