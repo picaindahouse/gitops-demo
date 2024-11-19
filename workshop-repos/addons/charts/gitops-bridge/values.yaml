@@ -22,10 +22,9 @@ stackPathConfig: 'addons-config.yaml'
 repoURLGit: "'{{.metadata.annotations.addons_repo_url}}'"
 repoURLGitRevision: HEAD
 repoURLGitBasePath: "stacks/"
-repoURLValues: "'{{.metadata.annotations.addons_repo_url}}tree/HEAD/{{.metadata.annotations.addons_repo_basepath}}'"
+repoURLValues: "'{{.metadata.annotations.addons_repo_url}}'"
 repoURLValuesRevision: HEAD
-repoURLValuesBasePath: ""
-repoURLValuesBasePathHelm: ""
+repoURLValuesBasePath: "workshop-repos/addons/"
 project: default
 namespace: argocd
 useSelector: true
