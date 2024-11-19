@@ -21,10 +21,10 @@ stackPathConfigPrefix: 'k8s-v'
 stackPathConfig: 'addons-config.yaml'
 repoURLGit: "'{{.metadata.annotations.addons_repo_url}}'"
 repoURLGitRevision: HEAD
-repoURLGitBasePath: "stacks/"
+repoURLGitBasePath: "workshop-repos/addons/"
 repoURLValues: "'{{.metadata.annotations.addons_repo_url}}'"
 repoURLValuesRevision: HEAD
-repoURLValuesBasePath: "workshop-repos/addons/"
+repoURLValuesBasePath: ""
 project: default
 namespace: argocd
 useSelector: true
