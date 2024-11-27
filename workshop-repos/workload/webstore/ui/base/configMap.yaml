@@ -8,3 +8,4 @@ data:
   ENDPOINTS_ORDERS: http://orders.orders.svc:80
   ENDPOINTS_ASSETS: http://assets.assets.svc:80
   ENDPOINTS_CHECKOUT: http://checkout.checkout.svc:80
+  timeout.reconciliation: 10s
