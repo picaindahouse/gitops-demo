@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/name: game-2048
     spec:
       containers:
-        - image: public.ecr.aws/l6m2t8p7/docker-2048 #uzyexe/tetris
+        - image: uzyexe/tetris
           name: game-2048
           ports:
             - containerPort: 80
