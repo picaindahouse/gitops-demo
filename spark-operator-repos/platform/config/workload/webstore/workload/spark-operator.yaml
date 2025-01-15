@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: spark-operator
+  namespace: argocd
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            environment: 'control-plane'
+  template:
+    metadata:
+      name: 'spark-operator-{{metadata.labels.environment}}'
+      labels:
+        environment: '{{metadata.labels.environment}}'
+        tenant: 'spark-operator'
+        workloads: 'true'
+    spec:
+      project: default
+      source:
+        repoURL: '{{metadata.annotations.workload_repo_url}}'
+        path: '{{metadata.annotations.workload_repo_basepath}}spark-operator'
+        targetRevision: '{{metadata.annotations.workload_repo_revision}}'
+      destination:
+        namespace: 'spark-team-a'
+        name: '{{name}}'
+      syncPolicy:
+        automated:
+          allowEmpty: true
+          selfHeal: true
+          prune: true
+        retry:
+          backoff:
+            duration: 1m
