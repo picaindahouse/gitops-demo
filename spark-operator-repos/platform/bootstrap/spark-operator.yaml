@@ -24,6 +24,10 @@ spec:
         repoURL: '{{metadata.annotations.workload_repo_url}}'
         path: '{{metadata.annotations.workload_repo_basepath}}spark-operator'
         targetRevision: '{{metadata.annotations.workload_repo_revision}}'
+        helm:                           # Add this section
+          releaseName: spark-operator
+          valueFiles:
+            - values.yaml
       destination:
         namespace: 'spark-team-a'
         name: '{{name}}'
@@ -33,7 +37,7 @@ spec:
           selfHeal: true
           prune: true
         syncOptions:
-          - CreateNamespace=true  # Add this line
+          - CreateNamespace=true
         retry:
           backoff:
             duration: 1m
