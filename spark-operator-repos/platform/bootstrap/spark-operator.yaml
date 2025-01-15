@@ -32,6 +32,8 @@ spec:
           allowEmpty: true
           selfHeal: true
           prune: true
+        syncOptions:
+          - CreateNamespace=true  # Add this line
         retry:
           backoff:
             duration: 1m
