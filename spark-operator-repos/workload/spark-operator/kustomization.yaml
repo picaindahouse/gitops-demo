@@ -14,3 +14,14 @@ helmCharts:
     releaseName: spark-operator
     version: 1.1.27
     repo: https://googlecloudplatform.github.io/spark-on-k8s-operator
+
+# Add this annotation to enable Helm
+annotations:
+  config.kubernetes.io/function: |
+    exec:
+      path: helm
+      args:
+        - template
+        - --include-crds
+        - --namespace
+        - spark-team-a
