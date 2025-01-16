@@ -1,24 +1,22 @@
 spark-operator:
-  image:
-    repository: ghcr.io/googlecloudplatform/spark-operator
-    tag: v1beta2-1.3.8-3.1.1
+  enableWebhook: true
+  webhook:
+    enable: true
+    port: 8080
+    namespaceSelector:
+      matchLabels:
+        spark-webhook: enabled
 
   serviceAccounts:
     spark:
       create: false
       name: spark-team-a
+    webhook:
+      create: true
+      name: spark-operator-webhook
 
-  webhook:
-    enable: true
-    port: 8080
-
-  metrics:
-    enable: true
-    endpoint: /metrics
-    port: 10254
-
-  batchScheduler:
-    enable: true
+  rbac:
+    create: true
 
   resources:
     limits:
@@ -28,15 +26,20 @@ spark-operator:
       cpu: 100m
       memory: 512Mi
 
-  podSecurityContext:
-    runAsNonRoot: true
-    runAsUser: 65534
+  metrics:
+    enable: true
+    endpoint: /metrics
+    port: 10254
+
+  batchScheduler:
+    enable: true
 
   securityContext:
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - ALL
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsUser: 65534
+    runAsUser: 185
+    fsGroup: 185
+
+  webhookSecurityContext:
+    runAsUser: 185
+    fsGroup: 185
+
+  logLevel: 2
