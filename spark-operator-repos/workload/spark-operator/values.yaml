@@ -36,7 +36,6 @@ spark-operator:
   securityContext:
     runAsNonRoot: true
     runAsUser: 185
-    fsGroup: 185
 
   webhookConfig:
     mutatingWebhookConfigurationName: "spark-operator-webhook"
