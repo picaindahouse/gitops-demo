@@ -6,6 +6,7 @@ spark-operator:
     namespaceSelector:
       matchLabels:
         spark-webhook: enabled
+    cleanupOnDelete: false  # Add this to prevent the cleanup job issues
 
   serviceAccounts:
     spark:
@@ -35,11 +36,17 @@ spark-operator:
     enable: true
 
   securityContext:
+    runAsNonRoot: true
     runAsUser: 185
     fsGroup: 185
 
-  webhookSecurityContext:
-    runAsUser: 185
-    fsGroup: 185
+  webhookConfig:
+    mutatingWebhookConfigurationName: "spark-operator-webhook"
+    cleanupEnabled: false  # Add this to prevent cleanup issues
 
   logLevel: 2
+
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 185
+    fsGroup: 185
