@@ -3,9 +3,7 @@ spark-operator:
   webhook:
     enable: true
     port: 8080
-    namespaceSelector:
-      matchLabels:
-        spark-webhook: enabled
+    namespaceSelector: "spark-webhook=enabled"  
     cleanupOnDelete: false  # Add this to prevent the cleanup job issues
 
   serviceAccounts:
