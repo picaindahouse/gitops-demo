@@ -1,0 +1,110 @@
+# frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-analysis-frontend
+  namespace: stock-analysis
+  labels:
+    app: stock-analysis-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stock-analysis-frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: stock-analysis-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: public.ecr.aws/q9s6e1b3/stock-analysis-frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "300m"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+---
+# frontend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-analysis-frontend
+  namespace: stock-analysis
+  labels:
+    app: stock-analysis-frontend
+spec:
+  selector:
+    app: stock-analysis-frontend
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+  type: ClusterIP
+---
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stock-analysis-ingress
+  namespace: stock-analysis
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/healthcheck-path: "/"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
+spec:
+  rules:
+  - http:
+      paths:
+      # Backend API route (must come before frontend for proper path matching)
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: stock-analysis-backend
+            port:
+              number: 5000
+      # Frontend route
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: stock-analysis-frontend
+            port:
+              number: 80
