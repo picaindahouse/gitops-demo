@@ -1,0 +1,1 @@
+Contains the git repos argocd hub and spoke will refer to for addons and workloads.
