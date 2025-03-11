@@ -1,0 +1,76 @@
+# backend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-analysis-backend
+  namespace: stock-analysis
+  labels:
+    app: stock-analysis-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stock-analysis-backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: stock-analysis-backend
+    spec:
+      containers:
+      - name: backend
+        image: public.ecr.aws/q9s6e1b3/stock-analysis-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_ENV
+          value: "production"
+        - name: FLASK_APP
+          value: "app.py"
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 5000
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 20
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+# backend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-analysis-backend
+  namespace: stock-analysis
+  labels:
+    app: stock-analysis-backend
+spec:
+  selector:
+    app: stock-analysis-backend
+  ports:
+  - port: 5000
+    targetPort: 5000
+    protocol: TCP
+  type: ClusterIP
