@@ -1,0 +1,41 @@
+# ebs-test.yaml
+---
+# PersistentVolumeClaim using the existing gp3 StorageClass (default)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-test-pvc
+  namespace: stock-analysis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: gp3  # Using the existing default StorageClass
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Test Pod that mounts the PVC
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-test-pod
+  namespace: stock-analysis
+spec:
+  containers:
+    - name: ebs-test
+      image: busybox
+      command: ["sh", "-c", "while true; do echo $(date) >> /data/test.txt; sleep 5; done"]
+      volumeMounts:
+        - name: ebs-volume
+          mountPath: /data
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "100m"
+        limits:
+          memory: "128Mi"
+          cpu: "200m"
+  volumes:
+    - name: ebs-volume
+      persistentVolumeClaim:
+        claimName: ebs-test-pvc
