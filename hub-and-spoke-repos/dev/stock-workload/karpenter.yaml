@@ -4,9 +4,9 @@ kind: EC2NodeClass
 metadata:
   name: default
 spec:
-  imageFamily: custom
+  amiFamily: Custom
   amiSelectorTerms:
-    id: ami-00bbe5abb265a237a
+  - id: ami-00bbe5abb265a237a
   role: karpenter-spoke-dev-20250312141856806600000005
   subnetSelectorTerms:
     - id: subnet-0064d2e92676b513f # Replace with your private subnet IDs
