@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: public.ecr.aws/q9s6e1b3/stock-analysis-frontend:latest
+        image: public.ecr.aws/v2f5y6u4/stock-frontend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
