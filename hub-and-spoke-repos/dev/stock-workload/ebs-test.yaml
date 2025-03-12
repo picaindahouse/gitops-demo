@@ -1,15 +1,22 @@
-# ebs-test.yaml
+# efs-test.yaml
 ---
-# PersistentVolumeClaim using the existing gp3 StorageClass (default)
+# StorageClass for EFS
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: efs-sc
+provisioner: efs.csi.aws.com
+---
+# PersistentVolumeClaim using EFS StorageClass
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-test-pvc
+  name: efs-test-pvc
   namespace: stock-analysis
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: gp3  # Using the existing default StorageClass
+    - ReadWriteMany  # EFS supports ReadWriteMany
+  storageClassName: efs-sc
   resources:
     requests:
       storage: 1Gi
@@ -18,15 +25,15 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: ebs-test-pod
+  name: efs-test-pod
   namespace: stock-analysis
 spec:
   containers:
-    - name: ebs-test
+    - name: efs-test
       image: busybox
       command: ["sh", "-c", "while true; do echo $(date) >> /data/test.txt; sleep 5; done"]
       volumeMounts:
-        - name: ebs-volume
+        - name: efs-volume
           mountPath: /data
       resources:
         requests:
@@ -36,6 +43,6 @@ spec:
           memory: "128Mi"
           cpu: "200m"
   volumes:
-    - name: ebs-volume
+    - name: efs-volume
       persistentVolumeClaim:
-        claimName: ebs-test-pvc
+        claimName: efs-test-pvc
