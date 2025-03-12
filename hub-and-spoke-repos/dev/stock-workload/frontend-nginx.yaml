@@ -26,14 +26,18 @@ metadata:
     nginx.ingress.kubernetes.io/upstream-vhost: "$host"
     nginx.ingress.kubernetes.io/use-proxy-protocol: "false"
     kubernetes.io/ingress.class: "nginx"
-    # Add caching for static content
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_cache_path /tmp/nginx_cache levels=1:2 keys_zone=static_cache:10m max_size=10g inactive=60m use_temp_path=off;
-      proxy_cache static_cache;
-      proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
-      proxy_cache_valid 200 60m;
-    # Add rate limiting
+    # Enable proxy buffering for better performance
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    # Configure rate limiting
     nginx.ingress.kubernetes.io/limit-rps: "10"
+    nginx.ingress.kubernetes.io/limit-burst-multiplier: "5"
+    # Enable caching
+    nginx.ingress.kubernetes.io/proxy-cache: "true"
+    nginx.ingress.kubernetes.io/proxy-cache-valid: "200 60m"
+    # Configure backend timeouts
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
 spec:
   ingressClassName: nginx
   rules:
