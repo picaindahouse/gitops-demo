@@ -18,10 +18,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: karpenter.sh/provisioner-name
+              - key: karpenter.sh/nodepool
                 operator: Exists
       tolerations:
-      - key: "karpenter.sh/provisioner-name"
+      - key: "karpenter.sh/nodepool"
         operator: "Exists"
         effect: "NoSchedule"
       terminationGracePeriodSeconds: 0
