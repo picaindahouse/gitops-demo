@@ -19,15 +19,12 @@ spec:
             nodeSelectorTerms:
             - matchExpressions:
               - key: karpenter.sh/nodepool
-                operator: Exists
-      tolerations:
-      - key: "karpenter.sh/nodepool"
-        operator: "Exists"
-        effect: "NoSchedule"
+                operator: In
+                values: ["default"]
       terminationGracePeriodSeconds: 0
       containers:
         - name: inflate
           image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
           resources:
             requests:
-              cpu: 1
+              cpu: 900m  # Reduced from 1 CPU to 250m\
