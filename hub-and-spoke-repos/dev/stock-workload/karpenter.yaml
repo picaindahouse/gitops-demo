@@ -1,10 +1,11 @@
 ---
-apiVersion: karpenter.k8s.aws/v1alpha1
+apiVersion: karpenter.k8s.aws/v1beta1
 kind: EC2NodeClass
 metadata:
   name: default
 spec:
   amiFamily: AL2
+  role: karpenter-spoke-dev-20250312141856806600000005
   subnetSelectorTerms:
     - tags:
         karpenter.sh/discovery: "spoke-dev"
@@ -14,7 +15,7 @@ spec:
   tags:
     karpenter.sh/discovery: "spoke-dev"
 ---
-apiVersion: karpenter.sh/v1alpha5
+apiVersion: karpenter.sh/v1beta1
 kind: NodePool
 metadata:
   name: default
