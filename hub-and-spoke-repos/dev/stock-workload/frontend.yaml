@@ -87,24 +87,14 @@ metadata:
     alb.ingress.kubernetes.io/success-codes: '200'
     alb.ingress.kubernetes.io/healthy-threshold-count: '2'
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
-    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
 spec:
   rules:
   - http:
       paths:
-      # Backend API route (must come before frontend for proper path matching)
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: stock-analysis-backend
-            port:
-              number: 5000
-      # Frontend route
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: stock-analysis-frontend
+            name: stock-analysis-ingress-nginx
             port:
               number: 80
