@@ -13,6 +13,17 @@ spec:
       labels:
         app: inflate
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: karpenter.sh/provisioner-name
+                operator: Exists
+      tolerations:
+      - key: "karpenter.sh/provisioner-name"
+        operator: "Exists"
+        effect: "NoSchedule"
       terminationGracePeriodSeconds: 0
       containers:
         - name: inflate
