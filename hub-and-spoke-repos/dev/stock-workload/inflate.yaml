@@ -27,4 +27,4 @@ spec:
           image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
           resources:
             requests:
-              cpu: 750m  # Reduced from 1 CPU to 250m\
+              cpu: 1m  # Reduced from 1 CPU to 250m\
