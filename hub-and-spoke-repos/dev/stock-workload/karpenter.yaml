@@ -5,7 +5,7 @@ metadata:
   name: default
 spec:
   imageFamily: custom
-  amiSelector:
+  amiSelectorTerms:
     id: ami-00bbe5abb265a237a
   role: karpenter-spoke-dev-20250312141856806600000005
   subnetSelectorTerms:
