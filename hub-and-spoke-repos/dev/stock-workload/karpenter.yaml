@@ -11,12 +11,6 @@ spec:
     # Add more subnet IDs as needed
   securityGroupSelectorTerms:
     - id: sg-0eb7354b166472cc9  # Replace with your node security group ID
-  subnetSelectorTerms:
-    - tags:
-        karpenter.sh/discovery: "spoke-dev"
-  securityGroupSelectorTerms:
-    - tags:
-        karpenter.sh/discovery: "spoke-dev"
   tags:
     karpenter.sh/discovery: "spoke-dev"
 ---
